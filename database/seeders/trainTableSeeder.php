@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Train;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Faker\Generator as Faker;
 
 class trainTableSeeder extends Seeder
 {
@@ -13,7 +14,7 @@ class trainTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(Faker $faker)
     {
 
         /*
@@ -27,16 +28,20 @@ class trainTableSeeder extends Seeder
             $table->boolean('is_in_time')->default(1);
             $table->boolean('is_cancelled')->default(0);
         */
-        $new_train = new Train();
 
-        $new_train->agency = "Trenitalia";
-        $new_train->departure_station = "Napoli Garibaldi";
-        $new_train->arrival_station = "Roma Termini";
-        $new_train->departure_time = "15:57";
-        $new_train->arrival_time = "17:36";
-        $new_train->train_code = "NA1926CM";
-        $new_train->carriage_number = 7;
+        for ($i = 0; $i < 20; $i++) {
 
-        $new_train->save();
+            $new_train = new Train();
+
+            $new_train->agency = $faker->word();
+            $new_train->departure_station = $faker->word();
+            $new_train->arrival_station = $faker->word();
+            $new_train->departure_time = $faker->time();
+            $new_train->arrival_time = $faker->time();
+            $new_train->train_code = $faker->numerify('train-####');
+            $new_train->carriage_number = $faker->numberBetween(2, 10);
+
+            $new_train->save();
+        }
     }
 }
